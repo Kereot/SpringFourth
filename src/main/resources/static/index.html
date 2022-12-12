@@ -21,19 +21,44 @@
             <td>ID</td>
             <td>Name</td>
             <td>Price</td>
-            <td>Action</td>
+            <td>Delete</td>
+            <td>New Price</td>
+            <td>Confirm</td>
         </tr>
         <tbody>
         <tr ng-repeat="s in ProductsList">
             <td>{{s.id}}</td>
             <td>{{s.name}}</td>
+            <td>{{s.cost}}</td>
             <td>
-                <button class="btn btn-primary" ng-click="changeScore(s.id, -5)">-</button>
-                {{s.cost}}
-                <button class="btn btn-primary" ng-click="changeScore(s.id, 5)">+</button>
+                <button class="btn btn-danger" ng-click="deleteProduct(s.id)">Remove</button>
             </td>
             <td>
-                <button class="btn btn-danger" ng-click="deleteProduct(s.id)">Исключить</button>
+                <input type="number" name="new_price" ng-model="newPrice" />
+            </td>
+            <td>
+                <button class="btn btn-primary" ng-click="changePrice(s.id, newPrice)">Confirm</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <h3>Add Product</h3>
+    <table class="table table-hover" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Price</td>
+            <td>Confirm</td>
+        </tr>
+        <tbody>
+        <tr>
+            <td><input type="number" name="id" ng-model="newProductId" /></td>
+            <td><input type="text" name="name" ng-model="newProductName" /></td>
+            <td><input type="number" name="cost" ng-model="newProductCost" /></td>
+            <td>
+                <button class="btn btn-primary"
+                        ng-click="addProduct(newProductId, newProductName, newProductCost)">Confirm</button>
             </td>
         </tr>
         </tbody>
