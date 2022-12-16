@@ -1,7 +1,7 @@
 package com.geekbrains.spring.web.controllers;
 
 import com.geekbrains.spring.web.data.Product;
-import com.geekbrains.spring.web.services.ProductService;
+import com.geekbrains.spring.web.repositories.ProductDao;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,35 +9,34 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-    private final ProductService productService;
+    private final ProductDao productDao;
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
+    public ProductController(ProductDao productDao) {
+        this.productDao = productDao;
     }
 
     @GetMapping("")
     public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+        return productDao.findAll();
     }
 
     @GetMapping("/delete/{id}")
     public void deleteProduct(@PathVariable Integer id) {
-        productService.deleteProduct(id);
+        productDao.deleteById(id);
     }
 
     @GetMapping("/add")
     public void addProduct(
-            @RequestParam(required = false) Integer newProductId,
             @RequestParam(required = false) String newProductName,
             @RequestParam(required = false) Float newProductCost
     ) {
-        if (newProductId != null && !newProductName.isBlank() && newProductCost != null) {
-            productService.addProduct(newProductId, newProductName, newProductCost);
+        if (!newProductName.isBlank() && newProductCost != null) {
+            productDao.addProduct(new Product(newProductName, newProductCost));
         }
     }
 
     @GetMapping("/change_cost")
     public void changePrice(@RequestParam Integer productId, @RequestParam(defaultValue = "0") Float cost) {
-        productService.changePrice(productId, cost);
+        productDao.updatePrice(productId, cost);
     }
 }
